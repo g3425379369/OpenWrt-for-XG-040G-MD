@@ -23,7 +23,7 @@ on:
 
 env:
   CONFIG_FILE: "config/xg-040g-md.config"
-  REPO_URL: https://github.com/xiangtailiang/openwrt.git
+  REPO_URL: https://github.com/g3425379369/openwrt-xg.git
   REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
   UPLOAD_FIRMWARE: true
@@ -57,6 +57,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
           TZ: ${{ env.TZ }}
         run: |
+          sudo sysctl -w net.ipv4.tcp_congestion_control=bbr
           sudo apt update
           sudo apt purge -y python3-distutils || true
           sudo apt autoremove -y
