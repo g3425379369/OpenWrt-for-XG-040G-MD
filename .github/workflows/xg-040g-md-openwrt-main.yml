@@ -205,6 +205,7 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true'
         run: |
           cd openwrt/bin/targets/*/*
+          zip -r kmods.zip ./packages/
           rm -rf packages
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 
