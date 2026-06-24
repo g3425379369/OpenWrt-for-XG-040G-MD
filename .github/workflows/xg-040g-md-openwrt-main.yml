@@ -128,15 +128,21 @@ jobs:
       - name: Install third-party packages (homeproxy, passwall)
         working-directory: ./openwrt/package
         run: |
-          chmod +x $GITHUB_WORKSPACE/scripts/update-packages.sh
-          bash $GITHUB_WORKSPACE/scripts/update-packages.sh
+          # chmod +x $GITHUB_WORKSPACE/scripts/update-packages.sh
+          # bash $GITHUB_WORKSPACE/scripts/update-packages.sh
+          curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
+          git clone https://github.com/gSpotx2f/luci-app-temp-status package/luci-app-temp-status
+          git clone https://github.com/gSpotx2f/luci-app-cpu-status.git package/luci-app-cpu-status
+          git clone https://github.com/gSpotx2f/luci-app-cpu-perf package/luci-app-cpu-perf
+          git clone https://github.com/g3425379369/luci-app-airoha-npu package/luci-app-airoha-npu
+          
           
       - name: Copy configuration and defconfig
         run: |
           cp -fv "${CONFIG_FILE}" openwrt/.config
           cd openwrt
-          sed -i '/^CONFIG_LINUX_6_12=/d;/^CONFIG_LINUX_6_18=/d' .config
-          printf 'CONFIG_LINUX_6_18=y\n' >> .config
+          # sed -i '/^CONFIG_LINUX_6_12=/d;/^CONFIG_LINUX_6_18=/d' .config
+          # printf 'CONFIG_LINUX_6_18=y\n' >> .config
           make defconfig
           [ -e .config ] && cp .config defconfig-final.config
 
