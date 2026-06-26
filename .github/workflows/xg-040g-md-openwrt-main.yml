@@ -12,6 +12,11 @@ on:
         required: false
         default: false
         type: boolean
+      ssh:
+        description: ' ← 选择是否开启 SSH 调试专业人员使用'
+        required: false
+        default: false
+        type: boolean
 
 env:
   CONFIG_FILE: "config/xg-040g-md.config"
@@ -80,7 +85,7 @@ jobs:
 
       - name: Clone OpenWrt source code (openwrt-main)
         run: |
-          git clone --depth 1 --branch "$REPO_BRANCH" "$REPO_URL" openwrt
+          git clone --branch "$REPO_BRANCH" "$REPO_URL" openwrt
 
       - name: Move build dirs to /mnt/openwrt
         run: |
@@ -141,6 +146,10 @@ jobs:
           # printf 'CONFIG_LINUX_6_18=y\n' >> .config
           make defconfig
           [ -e .config ] && cp .config defconfig-final.config
+
+      - name: SSH 调试有效时间6h! 连接后输入q 输入exit即可退出，自动继续后续编译流程
+        uses: mxschmitt/action-tmate@master
+        if: ${{ inputs.ssh || contains(github.event.action, 'ssh') }}
 
       - name: Upload build config files
         uses: actions/upload-artifact@v6
